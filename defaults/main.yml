@@ -19,3 +19,4 @@ ec2launch:
   inventory_group: app
   ansible_user: ubuntu
   ansible_key: "path/to/ansible.key"
+  user_data: ""
