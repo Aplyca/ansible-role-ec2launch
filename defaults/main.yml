@@ -1,0 +1,21 @@
+---
+ec2launch:
+  relaunch: False
+  region: "us-west-2"
+  groups: []
+  iam_role: ""
+  keypair: ""
+  ami: ""
+  subnet: ""
+  instance_type: "t1.micro"
+  volumes: []
+  elastic_ips: []
+  count: 1
+  tags:
+     Name: "App"
+  check:
+    ip: public_ip
+    port: 22
+  inventory_group: app
+  ansible_user: ubuntu
+  ansible_key: "path/to/ansible.key"

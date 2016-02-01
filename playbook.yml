@@ -1,0 +1,7 @@
+---
+- name: Launch or replace EC2 instances
+  hosts: local
+  connection: local
+  gather_facts: no
+  roles:
+    - role: aplyca.EC2Launch

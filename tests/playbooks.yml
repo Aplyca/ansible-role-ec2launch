@@ -1,0 +1,16 @@
+---
+- name: Launch or replace EC2 instances
+  hosts: local
+  connection: local
+  gather_facts: no
+  vars_files:
+    - custom.yml
+  roles:
+    - role: aplyca.EC2Launch
+
+- name: Test Ansible tasks
+  hosts: app
+  gather_facts: no
+  tasks:
+    - name: Test command
+      command: "ls"

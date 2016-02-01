@@ -1,0 +1,56 @@
+---
+- debug: var=ec2launch
+  tags: vars
+
+- name: Terminate current instances.
+  ec2:
+    region: "{{ ec2launch.region }}"
+    exact_count: 0
+    image: "{{ ec2launch.ami }}"
+    count_tag: "{{ ec2launch.tags }}"
+  when: ec2launch.relaunch
+  tags: terminate
+
+- name: Launch instances
+  ec2:
+    key_name: "{{ ec2launch.keypair }}"
+    image: "{{ ec2launch.ami }}"
+    group: "{{ ec2launch.groups }}"
+    instance_type: "{{ ec2launch.instance_type }}"
+    wait: true
+    region: "{{ ec2launch.region }}"
+    vpc_subnet_id: "{{ ec2launch.subnet }}"
+    instance_profile_name: "{{ ec2launch.iam_role }}"
+    instance_tags: "{{ ec2launch.tags }}"
+    assign_public_ip: yes
+    volumes: "{{ ec2launch.volumes }}"
+    count: "{{ ec2launch.count }}"
+  register: launched
+  tags: launch
+
+- name: Wait for SSH to come up
+  wait_for:
+    host: "{{ item[ec2launch.check.ip] }}"
+    port: "{{ ec2launch.check.port }}"
+    delay: 60
+    timeout: 900
+    state: started
+  with_items: "{{ launched.instances }}"
+
+- name: Associate Elastic IP to instances
+  ec2_eip:
+    region: "{{ ec2launch.region }}"
+    in_vpc: yes
+    instance_id: "{{ launched.instances[item.0].id }}"
+    ip: "{{ item.1 }}"
+    with_indexed_items: "{{ ec2launch.elastic_ips }}"
+  when: ec2launch.elastic_ips
+
+- name: Add launched instances to host group
+  add_host:
+    hostname: "{{ item.id }}.{{ ec2launch.inventory_group }}"
+    groupname: "{{ ec2launch.inventory_group }}"
+    ansible_ssh_host: "{{ item[ec2launch.check.ip] }}"
+    ansible_user: "{{ ec2launch.ansible_user }}"
+    ansible_ssh_private_key_file: "{{ ec2launch.ansible_key }}"
+  with_items: launched.instances
