@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  author: aplyca
+  author: Aplyca
   description: Launch or replace EC2 instances
   company: "Aplyca"
   license: "Public"

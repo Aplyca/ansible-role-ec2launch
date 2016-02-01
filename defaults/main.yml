@@ -19,3 +19,9 @@ ec2launch:
   inventory_group: app
   ansible_user: ubuntu
   ansible_key: "path/to/ansible.key"
+  slack:
+    message: "App instances launched"
+    description: "The instance is running"
+    username: "Ansible"
+    channel: instances
+    icon_emoji: ":bot:"

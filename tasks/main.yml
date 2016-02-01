@@ -54,3 +54,26 @@
     ansible_user: "{{ ec2launch.ansible_user }}"
     ansible_ssh_private_key_file: "{{ ec2launch.ansible_key }}"
   with_items: launched.instances
+
+- name: Send notification to Slack
+  slack:
+    token: "{{ ec2launch.slack.token }}"
+    msg: "{{ ec2launch.slack.message }}"
+    attachments:
+      - title: "Instance info"
+        text: "{{ ec2launch.slack.description }}"
+        color: good
+        fields:
+          - title: "Instance tags"
+            value: "{{ ec2launch.tags | join(' - ') }}"
+            short: "true"
+          - title: "AMI Id"
+            value: "{{ ec2launch.ami }}"
+            short: "true"
+          - title: "Instances"
+            value: "{{ launched.instances|map(attribute='id')|join(', ') }}"
+            short: "true"
+    username: "{{ ec2launch.slack.username }}"
+    channel: "{{ ec2launch.slack.channel }}"
+    icon_emoji: "{{ ec2launch.slack.icon_emoji }}"
+  when: ec2launch.slack.token is defined
