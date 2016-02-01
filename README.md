@@ -10,7 +10,7 @@ None
 
 ## Configuration:
 
-UModify in your custon role the following variables:
+Modify in your custon role the following variables:
 
 https://github.com/Aplyca/ansible-role-ec2launch/blob/master/defaults/main.yml
 
