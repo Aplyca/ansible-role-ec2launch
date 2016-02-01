@@ -8,9 +8,13 @@
 
 None
 
-## Deploy environment
+## Configuration:
 
-Launch instances:
+UModify in your custon role the following variables:
+
+https://github.com/Aplyca/ansible-role-ec2launch/blob/master/defaults/main.yml
+
+## Launch instances
 
 ```bash
 ansible-playbook -i inventories/local playbooks.yml
@@ -27,7 +31,7 @@ By default the tests-custom.yml file is ignored in git, be mindful to not add to
 
 ## Tests
 ```bash
-ansible-playbook -i inventories/local tests/playbook.yml
+ansible-playbook -i inventories/local tests/playbooks.yml
 ```
 
 ## Version control
