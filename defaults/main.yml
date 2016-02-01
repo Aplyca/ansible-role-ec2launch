@@ -25,3 +25,4 @@ ec2launch:
     username: "Ansible"
     channel: instances
     icon_emoji: ":bot:"
+  user_data: ""

@@ -25,6 +25,7 @@
     assign_public_ip: yes
     volumes: "{{ ec2launch.volumes }}"
     count: "{{ ec2launch.count }}"
+    user_data: "{{ lookup('template', 'user_data.j2')|default('')}}"
   register: launched
   tags: launch
 
@@ -43,7 +44,7 @@
     in_vpc: yes
     instance_id: "{{ launched.instances[item.0].id }}"
     ip: "{{ item.1 }}"
-    with_indexed_items: "{{ ec2launch.elastic_ips }}"
+  with_indexed_items: "{{ ec2launch.elastic_ips }}"
   when: ec2launch.elastic_ips
 
 - name: Add launched instances to host group
