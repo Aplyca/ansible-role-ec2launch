@@ -1,4 +1,4 @@
-# Launch or regenerate EC2 isntances with Ansible
+# Launch or regenerate EC2 isntances with Ansible.
 
 ## Ansible
 * Read how to use the **Ansible** provisioner in README.md of each role.
@@ -35,4 +35,4 @@ ansible-playbook -i inventories/local tests/playbooks.yml
 ```
 
 ## Version control
-* Use git to push/push all your changes.
+* Use git to push/push all your changes, check updates for new tags.
